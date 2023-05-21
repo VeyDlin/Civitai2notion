@@ -1,0 +1,14 @@
+{
+    "notion": {
+        "token": "",
+        "lora_database": "",
+        "checkpoint_database": ""
+    },
+    "civitai": {
+        "token": ""
+    },
+    "save": {
+        "lora_dir": "",
+        "checkpoint_dir": ""
+    }
+}
