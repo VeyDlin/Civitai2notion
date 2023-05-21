@@ -76,8 +76,8 @@ class CivitaiClient():
         model = self.get_model(id)
 
         download_url =  model['modelVersions'][0]['files'][0]['downloadUrl']
-        format =  model['modelVersions'][0]['files'][0]['metadata']['format'].lower()
-    
+        format =  self.format_convert(model['modelVersions'][0]['files'][0]['metadata']['format'])
+                                 
         response = self.session.get(download_url, params={'token':self.token}, stream=True)
 
         with response as r:
@@ -86,3 +86,12 @@ class CivitaiClient():
                 shutil.copyfileobj(r.raw, f)
 
 
+
+    def format_convert(self, format):
+        format = format.lower()
+
+        if format is 'safetensor':
+            return 'safetensors'
+        
+        return format
+        

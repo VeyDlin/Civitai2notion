@@ -4,7 +4,7 @@ import os
 
 
 
-worker = Worker('config.json')
+worker = Worker('config.gitkeep.json')
 
 
 
