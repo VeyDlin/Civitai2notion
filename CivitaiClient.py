@@ -90,7 +90,7 @@ class CivitaiClient():
     def format_convert(self, format):
         format = format.lower()
 
-        if format is 'safetensor':
+        if format == 'safetensor':
             return 'safetensors'
         
         return format
