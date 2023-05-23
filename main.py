@@ -4,7 +4,7 @@ import os
 
 
 
-worker = Worker('config.gitkeep.json')
+worker = Worker('config.json')
 
 
 
@@ -21,13 +21,13 @@ def select_scenario():
 
     os.system('cls')
 
-    if scenario is '1':
+    if scenario == '1':
         worker.add_all_lora_favorites()
 
-    if scenario is '2':
+    if scenario == '2':
         worker.check_lora_database()
 
-    if scenario is '3':
+    if scenario == '3':
         worker.download_lora_database()
 
     
