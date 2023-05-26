@@ -52,7 +52,7 @@ class Worker:
                     print(f'{BColors.WARNING}   [SKIP] {BColors.ENDC} {model["name"]}')
                 else:
                     self.add_lora(
-                        title=model['name'], 
+                        title=model['simple_name'] if self.config['notion']['simple_name_in_title'] else model['name'],
                         lora_name=model['lora_name'], 
                         url=model['url'], 
                         triggers=model['triggers'], 

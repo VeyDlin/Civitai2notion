@@ -2,7 +2,8 @@
     "notion": {
         "token": "",
         "lora_database": "",
-        "checkpoint_database": ""
+        "checkpoint_database": "",
+        "simple_name_in_title": false
     },
     "civitai": {
         "token": ""
