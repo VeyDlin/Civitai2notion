@@ -29,7 +29,7 @@ class Worker:
     def add_all_lora_favorites(self):
         all_lora_notion = self.get_lora_pages()
 
-        self.civitai.set_filters(favorites=True, types=[ModelsTypes.LORA])
+        self.civitai.set_filters(favorites=True, types=[ModelsTypes.LORA, ModelsTypes.LoCon])
         self.civitai.to_page(1)
 
         page_counter = 1

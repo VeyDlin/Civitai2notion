@@ -10,6 +10,7 @@ class ModelsTypes:
     Hypernetwork = 'Hypernetwork'
     AestheticGradient = 'AestheticGradient'
     LORA = 'LORA'
+    LoCon = 'LoCon'
     Controlnet = 'Controlnet'
     Poses = 'Poses'
 
