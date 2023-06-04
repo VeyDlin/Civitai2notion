@@ -2,7 +2,7 @@
 
 <img src=".github/notion_demo.png" style="float: left;" />
 
-This repository is designed to synchronize your LoRA bookmarks on the Civitas website and your Notion, as well as to download them automatically
+This repository is designed to synchronize your LoRA bookmarks on the Civitai website and your Notion, as well as to download them automatically
 
 
 The script writes the names of your LoRA files to your notion database and automatically downloads them, which means that you can use the convenient search for your notion, write notes, and then open the page and simply copy the name of the LoRA file to your prompt
@@ -27,10 +27,13 @@ The script also automatically records trigger words and adds an image!
 
 1) Create a new notion database and name it whatever you want. Use the following properties:
 
-   `Lora` - ` Type Text` 
-   ` Trigger Words`  - ` Type Text` 
-   ` URL`  - ` Type URL` 
-   ` Tags`  - ` Type Multi-select` 
+   `Lora` - `Type Text` 
+   
+   `Trigger Words`  - `Type Text` 
+   
+   `URL`  - `Type URL` 
+   
+   `Tags`  - `Type Multi-select` 
 
    For `Tags`, create the `BOTCREATE` tag, so you will understand which of the entries were added automatically, the rest of the tags can be created at your discretion
 
