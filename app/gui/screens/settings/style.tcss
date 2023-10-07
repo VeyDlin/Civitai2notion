@@ -1,0 +1,43 @@
+PropertyWidget {
+    background: $boost;
+    height: 5;
+    margin: 1;
+    min-width: 50;
+    padding: 1;
+}
+
+PropertyWidget > Label {
+    dock: left;
+    content-align: left middle;
+    height: 3;
+    min-width: 50;
+}
+
+PropertyWidget .right-dock {
+    dock: right;
+    width: 50%;
+}
+
+
+SettingsScreen #save {
+    dock: right;
+    width: 50%;
+}
+
+SettingsScreen #reset {
+    dock: left;
+}
+
+SettingsScreen #save-content {
+    padding: 1;
+    height: 5;
+    padding: 1 2;
+    margin: 0;
+}
+
+SettingsScreen #group-content {
+    height: auto;
+}
+SettingsScreen #settings-content {
+
+}

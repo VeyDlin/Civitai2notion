@@ -7,8 +7,6 @@ if not exist ".venv\" (
 
     call python -m venv .venv
     call .venv\Scripts\activate.bat & pip install -r requirements.txt
-
-    echo ------------------------------------
 )
 
 call .venv\Scripts\activate.bat & python main.py

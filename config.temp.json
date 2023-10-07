@@ -1,0 +1,244 @@
+{
+    "config": [
+        {
+            "id": {
+                "val": "token",
+                "title": "Tokens"
+            },
+            "properties": [
+                {
+                    "id": "notion",
+                    "type": "password",
+                    "data": "",
+                    "title": "Notion token",
+                    "hint": "'My integrations' in Notion",
+                    "help": ""
+                },
+                {
+                    "id": "civitai",
+                    "type": "password",
+                    "data": "",
+                    "title": "Civit AI token",
+                    "hint": "'Account Settings' -> 'API Key'",
+                    "help": ""
+                }
+            ]
+        },
+        {
+            "id": {
+                "val": "lora",
+                "title": "LoRA settings"
+            },
+            "properties": [
+                {
+                    "id": "enable",
+                    "type": "bool",
+                    "data": true,
+                    "title": "Enable",
+                    "hint": "",
+                    "help": ""
+                },
+                {
+                    "id": "notion_database",
+                    "type": "string",
+                    "data": "",
+                    "title": "Notion database id",
+                    "hint": "Leave empty if not used",
+                    "help": ""
+                },
+                {
+                    "id": "save_path_v1_x",
+                    "type": "path",
+                    "data": "",
+                    "title": "Path to save for 1.x versions",
+                    "hint": "Leave empty if not used",
+                    "help": ""
+                },
+                {
+                    "id": "save_path_sdxl",
+                    "type": "path",
+                    "data": "",
+                    "title": "Path to save for SDXL versions",
+                    "hint": "Leave empty if not used",
+                    "help": ""
+                },
+                {
+                    "id": "add_version_to_file_name",
+                    "type": "bool",
+                    "data": false,
+                    "title": "Add version to the file name",
+                    "hint": "",
+                    "help": ""
+                },
+                {
+                    "id": "simple_titles",
+                    "type": "bool",
+                    "data": false,
+                    "title": "Use simple names in titles",
+                    "hint": "",
+                    "help": ""
+                },
+                {
+                    "id": "file_name_clear",
+                    "type": "string",
+                    "data": "concept, lora, beta, locon, loha, lycoris, experimental, test",
+                    "title": "Remove words when using a file names",
+                    "hint": "test, beta, concept...",
+                    "help": ""
+                },
+                {
+                    "id": "resolve_duplicates",
+                    "type": "bool",
+                    "data": true,
+                    "title": "Automatically resolve duplicates conflicts",
+                    "hint": "",
+                    "help": ""
+                }
+            ]
+        },
+        {
+            "id": {
+                "val": "checkpoint",
+                "title": "Checkpoint settings"
+            },
+            "properties": [
+                {
+                    "id": "enable",
+                    "type": "bool",
+                    "data": true,
+                    "title": "Enable",
+                    "hint": "",
+                    "help": ""
+                },
+                {
+                    "id": "notion_database",
+                    "type": "string",
+                    "data": "",
+                    "title": "Notion database id",
+                    "hint": "Leave empty if not used",
+                    "help": ""
+                },
+                {
+                    "id": "save_path_v1_x",
+                    "type": "path",
+                    "data": "",
+                    "title": "Path to save for 1.x versions",
+                    "hint": "Leave empty if not used",
+                    "help": ""
+                },
+                {
+                    "id": "save_path_sdxl",
+                    "type": "path",
+                    "data": "",
+                    "title": "Path to save for SDXL versions",
+                    "hint": "Leave empty if not used",
+                    "help": ""
+                },
+                {
+                    "id": "add_version_to_file_name",
+                    "type": "bool",
+                    "data": false,
+                    "title": "Add version to the file name",
+                    "hint": "",
+                    "help": ""
+                },
+                {
+                    "id": "simple_titles",
+                    "type": "bool",
+                    "data": false,
+                    "title": "Use simple names in titles",
+                    "hint": "",
+                    "help": ""
+                },
+                {
+                    "id": "file_name_clear",
+                    "type": "string",
+                    "data": "beta, experimental, test",
+                    "title": "Remove words when using a file names",
+                    "hint": "test, beta, concept...",
+                    "help": ""
+                },
+                {
+                    "id": "resolve_duplicates",
+                    "type": "bool",
+                    "data": false,
+                    "title": "Automatically resolve duplicates conflicts",
+                    "hint": "",
+                    "help": ""
+                }
+            ]
+        },
+        {
+            "id": {
+                "val": "embedding",
+                "title": "Embedding settings"
+            },
+            "properties": [
+                {
+                    "id": "enable",
+                    "type": "bool",
+                    "data": true,
+                    "title": "Enable",
+                    "hint": "",
+                    "help": ""
+                },
+                {
+                    "id": "notion_database",
+                    "type": "string",
+                    "data": "",
+                    "title": "Notion database id",
+                    "hint": "Leave empty if not used",
+                    "help": ""
+                },
+                {
+                    "id": "save_path_v1_x",
+                    "type": "path",
+                    "data": "",
+                    "title": "Path to save for 1.x versions",
+                    "hint": "Leave empty if not used",
+                    "help": ""
+                },
+                {
+                    "id": "save_path_sdxl",
+                    "type": "path",
+                    "data": "",
+                    "title": "Path to save for SDXL versions",
+                    "hint": "Leave empty if not used",
+                    "help": ""
+                },
+                {
+                    "id": "add_version_to_file_name",
+                    "type": "bool",
+                    "data": false,
+                    "title": "Add version to the file name",
+                    "hint": "",
+                    "help": ""
+                },
+                {
+                    "id": "simple_titles",
+                    "type": "bool",
+                    "data": false,
+                    "title": "Use simple names in titles",
+                    "hint": "",
+                    "help": ""
+                },
+                {
+                    "id": "file_name_clear",
+                    "type": "string",
+                    "data": "beta, experimental, test",
+                    "title": "Remove words when using a file names",
+                    "hint": "test, beta, concept...",
+                    "help": ""
+                },
+                {
+                    "id": "resolve_duplicates",
+                    "type": "bool",
+                    "data": false,
+                    "title": "Automatically resolve duplicates conflicts",
+                    "hint": "",
+                    "help": ""
+                }
+            ]
+        }
+    ]
+}

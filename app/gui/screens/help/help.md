@@ -1,13 +1,7 @@
 # Info
-
 Synchronize your Civitai LoRA, checkpoints and embeddings bookmarks and Notion and download them automatically 
 
-<img src=".readme/app.png" style="float: left;" />
-
-<img src=".readme/notion_demo.png" style="float: left;" />
-
-<img src=".readme/notion_full_card_demo.png" style="float: left;" />
-
+`github` - https://github.com/VeyDlin/Civitai2notion
 
 # Using
 
@@ -17,11 +11,11 @@ Just run `start.bat` if you are using Windows or `start.sh ` for Linux, the firs
 
 Available utilities:
 
-1) `Import from civitai` - `Import from civitai` - Add all bookmarks from Civitai to the Notion, only those models (LoRA, checkpoints or embeddings) for which you specified the database id in the settings will be added
+1. `Import from civitai` - `Import from civitai` - Add all bookmarks from Civitai to the Notion, only those models (LoRA, checkpoints or embeddings) for which you specified the database id in the settings will be added
 
    At this stage your models has not been downloaded yet, go to your database and edit your entries as desired, for example, sometimes you can add another name/title or change the image, as well as remove duplicates (see point 2)
 
-2) `Download from notion` - Checks the notion database for duplicates, the check takes place by the `File` property, since it will then be used for the names of the files that you download, if duplicates were found, then edit the entries in your notion database, for this you can use the built-in notion search bar to quickly find duplicates by name
+2. `Download from notion` - Checks the notion database for duplicates, the check takes place by the `File` property, since it will then be used for the names of the files that you download, if duplicates were found, then edit the entries in your notion database, for this you can use the built-in notion search bar to quickly find duplicates by name
 
    You have the option to use the automatic duplicate conflict resolution setting, in which case the application will simply add a postfix with a digit until the file name becomes unique
 
@@ -31,28 +25,25 @@ Available utilities:
 
 3. `Update notion database` - Check all models for new versions in Civitai, if new versions of models are found, the application will update the entries in the Notion database
 
-    The action updates the fields `Trigger Words`, `Hash` and `Version`in the Notion database but does not download files
+   The action updates the fields `Trigger Words`, `Hash` and `Version`in the Notion database but does not download files
 
-    To update the files you need to run the `Download from notion` utility and select `Download with hash check` 
+   To update the files you need to run the `Download from notion` utility and select `Download with hash check` 
 
-    This action will start checking the hash and loading models while outdated models will be updated due to a hash mismatch
+   This action will start checking the hash and loading models while outdated models will be updated due to a hash mismatch
 
-4) `Make all` Runs in turn `Import from civitai` -> `Update notion database` -> `Download from notion`
-
+4. `Make all` Runs in turn `Import from civitai` -> `Update notion database` -> `Download from notion`
 
 # Notion Config
 
-#### API Key
+### API Key
 
-1) Go to the [integrations](https://www.notion.so/my-integrations) and create a new integration
+1) Go to the `integrations` (https://www.notion.so/my-integrations) and create a new integration
 
 2) In the `Capabilities` menu set all permissions
 
-   <img src=".readme/notion_capabilities.png" style="zoom:50%;float: left;" />
-
 3) Copy the API key and write it to `Settings` - `Tokens` - `Notion token`
 
-#### Database
+### Database
 
 1) Create a new notion database and name it whatever you want. Use the following properties:
 
@@ -74,13 +65,9 @@ Available utilities:
    
    `Hash` - `Type`: `Text` 
 
-   <img src=".readme/notion_database.png" style="float: left;" />
-
 2) Create a new database in the notion
 
 3) Create a connection for your database so that the script can create records, to do this, select `...` from the top right and click `Add connections`, select your integration
-
-  <img src=".readme/notion_menu.png" style="float: left;" />
 
 4) Copy the `Database ID` while you are on the database page and write it to `Settings` - `LoRA settings` - `Notion database id`
     `Database ID` can be found in the browser line
@@ -94,29 +81,10 @@ Available utilities:
 
 6) Repeat steps 2 - 5 in order to create a database for embeddings (`Settings` - `Notion` - `Notion database id for embeddings`) and checkpoints (`Settings` - `Notion` - `Notion database id checkpoints`). You can skip this step, then the program will simply skip processing these categories
 
-# Civitai
+# Civitai Config
 
-#### API Key
+### API Key
 
-1) Go to the [Account Settings](https://civitai.com/user/account)  and create a new  `API Key`
-    <img src=".readme/civitai_api.png" style="float: left;" />
+1) Go to the `Account Settings` (https://civitai.com/user/account) and create a new  `API Key`
 
 2) Copy the API key and write it to `Settings` - `Tokens` - `Civit AI token`
-
-
-# Additionally 
-
-You can also use large image previews for LoRA cards in notion, for this you can use the `stylish` extension for your browser, add the following styles for the domain `notion.so `
-
-<img src=".readme/notion_card_demo.png" style="float: left;" />
-
-
-```css
-.notion-selectable.notion-page-block.notion-collection-item a > div:first-child > div:first-child > div:first-child {
-  height: 350px !important;
-}
-
-.notion-selectable.notion-page-block.notion-collection-item a > div:first-child > div:first-child > div:first-child img {
-  height: 350px !important;
-}
-```

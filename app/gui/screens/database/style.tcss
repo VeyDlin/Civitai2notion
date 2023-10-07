@@ -1,0 +1,22 @@
+
+DatabaseScreen #top-content {
+    height: 5;
+    padding: 1 0;
+    background: $boost;
+    margin: 0;
+}
+
+DatabaseScreen #top-content Button {
+    margin: 0 2;
+}
+
+DatabaseScreen #top-content #load {
+    height: auto;
+    width: auto;
+    padding: 1 0;
+    display: none;
+}
+
+DatabaseScreen #log {
+    border: $accent-darken-3;
+}
