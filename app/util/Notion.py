@@ -28,7 +28,7 @@ class Notion:
                 if type == "multi_select":
                     properties[key] = [x["name"] for x in value["multi_select"]]
                 if type == "select":
-                    properties[key] = value["select"]["name"]
+                    properties[key] = value["select"]["name"] if value["select"] else ""
                 if type == "url":
                     properties[key] = value["url"]
 
