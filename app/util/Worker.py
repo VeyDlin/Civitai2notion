@@ -1,6 +1,7 @@
 import os
 import re
 import uuid
+import traceback
 
 import aiofiles
 import aiofiles.os
@@ -57,7 +58,7 @@ class Worker:
         try:
             all_civitai_models = await Worker.__load_all_from_civitai()
         except Exception as err:
-            Log.error("App", f"Load models info from Civit AI error. {err=}")
+            Log.exception("App", f"Load models info from Civit AI error", err, traceback.format_exc())
             Worker.__end_work()
             return
     
@@ -169,7 +170,7 @@ class Worker:
         try:
             all_notion_pages = await Worker.__load_all_from_notion(database_id, use_cache = True)
         except Exception as err:
-            Log.error("App", f"Load {type} database from notion error. {err=}")
+            Log.exception("App", f"Load {type} database from notion error", err, traceback.format_exc())
             return
 
         download_counter = 0
@@ -198,7 +199,7 @@ class Worker:
                 await Worker.civitai.download_model(page["properties"]["Model ID"], path, page["properties"]["File"], hash)
                 download_counter += 1
             except Exception as err:
-                Log.error("App", f"Error model download. {err=}")
+                Log.exception("App", f"Error model download", err, traceback.format_exc())
 
         if not download_counter:
             Log.warning("App", "No new models to download")
@@ -217,7 +218,7 @@ class Worker:
         try:
             all_notion_pages = await Worker.__load_all_from_notion(database_id, use_cache = True)
         except Exception as err:
-            Log.error("App", f"Load {type} database from notion error. {err=}")
+            Log.exception("App", f"Load {type} database from notion error", err, traceback.format_exc())
             return
         
 
@@ -248,7 +249,7 @@ class Worker:
 
                 update_counter += 1
             except Exception as err:
-                Log.error("App", f"Error model update in {type} database. {err=}")
+                Log.exception("App", f"Error model update in {type} database", err, traceback.format_exc())
 
         if not update_counter:
             Log.warning("App", f"No models in {type} database to update")
@@ -264,7 +265,7 @@ class Worker:
         try:
             all_notion_pages = await Worker.__load_all_from_notion(database_id)
         except Exception as err:
-            Log.error("App", f"Load {database_type} database from notion error. {err=}")
+            Log.exception("App", f"Load {database_type} database from notion error", err, traceback.format_exc())
             return
 
         # Delete models that have already been added to notion and models that do not fit the type
@@ -332,7 +333,7 @@ class Worker:
                 add_counter += 1
                 Log.ok("App", f"Add model \"{model['name']}\" to notion database")
             except Exception as err:
-                Log.error("App", f"Add model \"{model['name']}\" (https://civitai.com/models/{model['id']}) to notion error. {err=}")
+                Log.exception("App", f"Add model \"{model['name']}\" (https://civitai.com/models/{model['id']}) to notion error", err, traceback.format_exc())
 
         if not add_counter:
             Log.warning("App", "No new models to add")
@@ -348,7 +349,7 @@ class Worker:
         try:
             all_notion_pages = await Worker.__load_all_from_notion(database_id, use_cache)
         except Exception as err:
-            Log.error("App", f"Load database from notion error. {err=}")
+            Log.exception("App", f"Load database from notion error", err, traceback.format_exc())
             return False
 
 

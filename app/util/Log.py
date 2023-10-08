@@ -43,3 +43,12 @@ class Log():
     @staticmethod
     def error_write(text):
         Log.write(Log.ERROR, None, text)
+
+
+    @staticmethod
+    def exception(name, text, err, traceback_text):
+        Log.write(Log.ERROR, name, f"{text} \r\n {err=} \r\n\r\n {traceback_text}")
+
+    @staticmethod
+    def exception_write(text, err, traceback_text):
+        Log.write(Log.ERROR, None, f"{text} \r\n {err=} \r\n\r\n {traceback_text}")

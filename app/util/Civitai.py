@@ -3,6 +3,7 @@ import aiofiles
 import hashlib
 import os
 import re
+import traceback
 from .Log import Log
 
 
@@ -78,7 +79,7 @@ class Civitai():
                 else:
                     out_list.append(self.__convert_json_model_data(model))
             except Exception as err:
-                Log.error("Civit AI", f"Load model info error. Model: https://civitai.com/models/{model['id']}. {err=}")
+                Log.exception("Civit AI", f"Load model info error. Model: https://civitai.com/models/{model['id']}", err, traceback.format_exc())
 
 
         self.lats_page += 1
