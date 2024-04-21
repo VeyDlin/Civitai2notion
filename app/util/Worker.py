@@ -382,8 +382,7 @@ class Worker:
             Log.warning("App", "Use Civit AI cache")
             return Worker.__civitai_cache
         
-        delay = int(Config.get("parser.civitai_page_delay").data)
-        all_models = await Worker.civitai.get_all(delay)
+        all_models = await Worker.civitai.get_all(wait_time = 1)
         Worker.__civitai_cache = Worker.__combined_cache(all_models, Worker.__civitai_cache)
 
         return all_models
