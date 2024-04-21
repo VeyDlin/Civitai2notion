@@ -42,7 +42,29 @@ class Config():
         if not os.path.exists(file) and temp_file is not None:
             shutil.copy2(temp_file, file)
 
+        if temp_file is not None:
+            Config.__update(file, temp_file)
+
         Config.load()
+
+
+
+    @staticmethod
+    def __update(file, temp_file):
+        with open(file, 'r') as f:
+            file_data = json.load(f)
+
+        with open(temp_file, 'r') as tf:
+            temp_file_data = json.load(tf)
+
+        file_data.update(temp_file_data)
+
+        keys_to_delete = [k for k in file_data if k not in temp_file_data]
+        for k in keys_to_delete:
+            del file_data[k]
+
+        with open(file, 'w') as f:
+            json.dump(file_data, f, indent=4)
 
 
 

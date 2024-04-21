@@ -26,6 +26,22 @@
         },
         {
             "id": {
+                "val": "parser",
+                "title": "Parser"
+            },
+            "properties": [
+                {
+                    "id": "civitai_page_delay",
+                    "type": "string",
+                    "data": "1",
+                    "title": "Civitai page load delay",
+                    "hint": "Delay in seconds",
+                    "help": ""
+                }
+            ]
+        },
+        {
+            "id": {
                 "val": "lora",
                 "title": "LoRA settings"
             },

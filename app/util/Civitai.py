@@ -1,5 +1,6 @@
 import aiohttp
 import aiofiles
+import asyncio
 import hashlib
 import os
 import re
@@ -36,7 +37,6 @@ class ModelsPeriod:
 
 class Civitai():
     token = None
-    lats_page = 1
     types = []
     favorites=False
 
@@ -52,26 +52,30 @@ class Civitai():
 
 
 
-    async def get_all(self):
+    async def get_all(self, wait_time = 1):
         out_list = []
+        page = 1
+        cursor = ""
         while True:
-            page_data = await self.get_page_and_next()
-            if not page_data:
+            data = await self.get_page_and_next(page, cursor)
+            await asyncio.sleep(wait_time)
+            if not data["models"] or data["cursor"] is None:
                 break
-            out_list.extend(page_data)
+            page += 1
+            cursor = data["cursor"]
+            out_list.extend(data["models"])
         return out_list
 
 
 
-    async def get_page_and_next(self, separate_model_request = False):
-        Log.info("Civit AI", f"Load page {self.lats_page}")
+    async def get_page_and_next(self, page, cursor, separate_model_request = False):
+        Log.info("Civit AI", f"Load page {page}")
 
         out_list = []
-        models = await self.__get_models_json(favorites=self.favorites, types=self.types, page=self.lats_page)
+        models = await self.__get_models_json(favorites=self.favorites, types=self.types, cursor=cursor)
 
         Log.ok("Civit AI", f"Page Loaded ({len(models['items'])} models)")
         
-
         for model in models["items"]:
             try:
                 if separate_model_request:
@@ -81,18 +85,13 @@ class Civitai():
             except Exception as err:
                 Log.exception("Civit AI", f"Load model info error. Model: https://civitai.com/models/{model['id']}", err, traceback.format_exc())
 
-
-        self.lats_page += 1
-
-        return out_list
-
-
-    
-    def to_page(self, page):
-        self.lats_page = page
+        return { 
+            "models": out_list, 
+            "cursor": models.get("metadata", {}).get("nextCursor")
+        }
 
 
-    
+
     async def download_model(self, id, save_dir, name, hash = None):
         model = await self.get_model_data(id)
 
@@ -161,16 +160,16 @@ class Civitai():
             json_data = await response.json()
 
             if "error" in json_data:
-                Log.error("Civit AI", f"JSON get error (https://civitai.com/api/v1/{page}). Error info: {json_data['error']}")
+                Log.error("Civit AI", f"JSON get error ({response.real_url}). Error info: {json_data['error']}")
                 raise Exception()
         
         return json_data
 
 
 
-    async def __get_models_json(self, page = 1, types = [ModelsTypes.Checkpoint], sort = ModelsSort.Newest, period = ModelsPeriod.AllTime, query = "", username = "", favorites = False, nsfw = True):
+    async def __get_models_json(self, cursor = "", types = [ModelsTypes.Checkpoint], sort = ModelsSort.Newest, period = ModelsPeriod.AllTime, query = "", username = "", favorites = False, nsfw = True, limit = 100):
         return await self.__get_json("models", {
-            "page": page, 
+            "cursor": cursor, 
             "types": types, 
             "sort": sort, 
             "period": period, 
@@ -178,6 +177,7 @@ class Civitai():
             "username": username, 
             "favorites": "true" if favorites else "false", 
             "nsfw": "true" if nsfw else "false",
+            "limit": limit, 
             "token": self.token
         }) 
 
