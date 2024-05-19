@@ -136,19 +136,21 @@ class Civitai():
 
 
     def __convert_json_model_data(self, model):
+        first_model = model["modelVersions"][0]
+        first_model_file = next((item for item in first_model["files"] if item["type"] != "Training Data"), None)
         return {
             "url": f"https://civitai.com/models/{model['id']}",
             "tags": model["tags"],
             "id": model["id"],
             "type": model["type"],
-            "triggers": model["modelVersions"][0]["trainedWords"],
-            "download": model["modelVersions"][0]["files"][0]["downloadUrl"],
-            "format": model["modelVersions"][0]["files"][0]["metadata"]["format"],
+            "triggers": first_model.get("trainedWords", ""),
+            "download": first_model_file["downloadUrl"],
+            "format": first_model_file["metadata"]["format"],
             "name": model["name"],
-            "base_model": model["modelVersions"][0]["baseModel"],
-            "version": model["modelVersions"][0]["name"],
-            "images": [o["url"] for o in model["modelVersions"][0]["images"]],
-            "SHA256": model["modelVersions"][0]["files"][0]["hashes"]["SHA256"]
+            "base_model": first_model["baseModel"],
+            "version": first_model["name"],
+            "images": [o["url"] for o in first_model["images"]],
+            "SHA256": first_model_file["hashes"]["SHA256"]
         }
 
 
