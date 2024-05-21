@@ -96,7 +96,7 @@ class Worker:
 
 
         # Download from notion
-        civitai_version = { "v1_x": ["SD 1.4", "SD 1.5"], "sdxl": ["SDXL 0.9", "SDXL 1.0"] }
+        civitai_version = { "v1_x": ["SD 1.4", "SD 1.5"], "sdxl": ["SDXL 0.9", "SDXL 1.0", "Pony"] }
 
         for key, val in ability.items():
             if ability[key]["active"]:
