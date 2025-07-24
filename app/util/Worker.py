@@ -3,6 +3,7 @@ import re
 import uuid
 import traceback
 
+import asyncio
 import aiofiles
 import aiofiles.os
 
@@ -96,7 +97,7 @@ class Worker:
 
 
         # Download from notion
-        civitai_version = { "v1_x": ["SD 1.4", "SD 1.5"], "sdxl": ["SDXL 0.9", "SDXL 1.0", "Pony"] }
+        civitai_version = { "v1_x": ["SD 1.4", "SD 1.5"], "sdxl": ["SDXL 0.9", "SDXL 1.0", "Pony", "Illustrious"] }
 
         for key, val in ability.items():
             if ability[key]["active"]:
@@ -367,7 +368,7 @@ class Worker:
             for duplicate in unique_duplicates:
                 Log.warning("App", f"File: {duplicate}")
 
-            Log.info("App", "Rename the \"File\" fields so that they are unique")
+            Log.info("App", "Rename the \"File\" fields in Notion so that they are unique")
             return False
          
 
@@ -448,9 +449,9 @@ class Worker:
             remove = [tag.strip() for tag in data.split(",")]
             name = " ".join([word for word in name.split() if word not in remove])
 
-        name = re.sub('[\W_]+', ' ', name)
+        name = re.sub(r'[\W_]+', ' ', name)
         name = re.sub(r'[^\x00-\x7f]', ' ', name)
-        name = re.sub(' +', separator, name.strip())
+        name = re.sub(r' +', separator, name.strip())
         return name 
 
 

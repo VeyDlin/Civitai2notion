@@ -2,6 +2,7 @@ import aiohttp
 import aiofiles
 import asyncio
 import hashlib
+from aiohttp import ClientError, ServerTimeoutError
 import os
 import re
 import traceback
@@ -92,36 +93,83 @@ class Civitai():
 
 
 
-    async def download_model(self, id, save_dir, name, hash = None):
+
+    async def download_model(self, id, save_dir, name, hash=None, max_retries=3, retry_delay=5):
         model = await self.get_model_data(id)
-
         Log.info("Civit AI", f"Start download {id} model")
-        response = await aiohttp.ClientSession().get(model["download"], params={'token': self.token})
-        format =  self.__get_extension_from_response(response)
-
-        if format is None:
-            Log.error("Civit AI", f"Download model {id} ({name}). Unable to download - unknown file extension")
-            raise Exception(f"Unknown file extension. Headers: {response.headers}")
         
-        if name == "":
-            Log.error("Civit AI", f"Download model id: {id}. Unable to download - empty file name")
-            raise Exception(f"Unknown file extension. Headers: {response.headers}")
-        
-        file_path = os.path.join(save_dir, f'{name}.{format}')
-
-        f = await aiofiles.open(file_path, mode = "wb")
-        async for chunk in response.content.iter_chunked(1024 * 1024):
-            await f.write(chunk)
-        await f.close()
-
-        # TODO: Check hash
-
-        Log.ok("Civit AI", f"Model {id} ({name}) successfully downloaded")
-
+        for attempt in range(max_retries + 1):
+            try:
+                async with aiohttp.ClientSession() as session:
+                    timeout = aiohttp.ClientTimeout(total=3600, connect=30, sock_read=60)
+                    
+                    async with session.get(
+                        model["download"], 
+                        params={'token': self.token},
+                        timeout=timeout
+                    ) as response:
+                        response.raise_for_status()
+                        
+                        format = self.__get_extension_from_response(response)
+                        if format is None:
+                            Log.error("Civit AI", f"Download model {id} ({name}). Unable to download - unknown file extension")
+                            raise Exception(f"Unknown file extension. Headers: {response.headers}")
+                        
+                        if name == "":
+                            Log.error("Civit AI", f"Download model id: {id}. Unable to download - empty file name")
+                            raise Exception(f"Empty file name")
+                        
+                        file_path = os.path.join(save_dir, f'{name}.{format}')
+                        temp_file_path = file_path + '.tmp'
+                        
+                        try:
+                            async with aiofiles.open(temp_file_path, mode='wb') as f:
+                                downloaded = 0
+                                async for chunk in response.content.iter_chunked(1024 * 1024 * 10):
+                                    await f.write(chunk)
+                                    downloaded += len(chunk)
+                                    if downloaded % (50 * 1024 * 1024) == 0:
+                                        Log.info("Civit AI", f"Downloaded {downloaded / 1024 / 1024:.1f} MB for model {id}")
+                                Log.info("Civit AI", f"Download complete {downloaded / 1024 / 1024:.1f} MB for model {id}")
+                            
+                            if os.path.exists(file_path):
+                                os.remove(file_path)
+                            os.rename(temp_file_path, file_path)
+                            
+                            if hash:
+                                pass
+                            
+                            Log.ok("Civit AI", f"Model {id} ({name}) successfully downloaded")
+                            return file_path
+                            
+                        except Exception as e:
+                            if os.path.exists(temp_file_path):
+                                try:
+                                    os.remove(temp_file_path)
+                                except:
+                                    pass
+                            raise e
+                            
+            except (ClientError, ServerTimeoutError, asyncio.TimeoutError, OSError) as e:
+                if attempt < max_retries:
+                    Log.warning(
+                        "Civit AI", 
+                        f"Download failed for model {id} (attempt {attempt + 1}/{max_retries + 1}): {str(e)}. "
+                        f"Retrying in {retry_delay} seconds..."
+                    )
+                    await asyncio.sleep(retry_delay)
+                    retry_delay = min(retry_delay * 2, 60)
+                else:
+                    Log.error("Civit AI", f"Failed to download model {id} after {max_retries + 1} attempts: {str(e)}")
+                    raise
+                    
+            except Exception as e:
+                Log.error("Civit AI", f"Unexpected error downloading model {id}: {str(e)}")
+                raise
 
 
     async def download_model_from_url(self, url, save_dir, name, hash = None):
-        id = re.search("models\/([0-9]+)", url)[1]
+        id = re.search(r"models\/([0-9]+)", url)[1]
         return await self.download_model(id, save_dir, name, hash)
 
     
@@ -191,7 +239,7 @@ class Civitai():
 
 
     async def get_model_from_url_json(self, url):
-        id = re.search("models\/([0-9]+)", url)[1]
+        id = re.search(r"models\/([0-9]+)", url)[1]
         return await self.__get_model_json(id)
     
 

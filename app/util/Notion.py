@@ -1,4 +1,7 @@
 import asyncio
+import json
+import aiofiles
+import os
 
 from notion_client import AsyncClient
 
@@ -12,7 +15,22 @@ class Notion:
 
 
 
-    async def get_all(self, database_id):
+    async def get_all(self, database_id, use_cache_file=False):
+        cache_dir = ".cache"
+        cache_file = os.path.join(cache_dir, f"notion_{database_id}.json")
+
+        if use_cache_file:
+            os.makedirs(cache_dir, exist_ok=True)
+            if os.path.exists(cache_file):
+                Log.warning("notion", f"Loading from cache file: {cache_file}")
+                try:
+                    async with aiofiles.open(cache_file, 'r', encoding='utf-8') as f:
+                        content = await f.read()
+                        cached_data = json.loads(content)
+                        return cached_data
+                except Exception as e:
+                    Log.error("notion", f"Failed to load cache: {e}")
+
         pages = await self.__get_all_raw(database_id)
 
         results = []
@@ -34,19 +52,40 @@ class Notion:
 
             results.append({ "id": page["id"], "properties": properties })
 
+        if use_cache_file:
+            try:
+                async with aiofiles.open(cache_file, 'w', encoding='utf-8') as f:
+                    await f.write(json.dumps(results, ensure_ascii=False, indent=2))
+                Log.ok("notion", f"Cache saved to: {cache_file}")
+            except Exception as e:
+                Log.error("notion", f"Failed to save cache: {e}")
+
         return results
 
 
 
-    async def add_page(self, database_id, properties, image_url = None):
-        image_block_props= {
-            "type": "image",
-            "image": { "type": "external", "external": { "url": image_url } }
-        }
+    async def add_page(self, database_id, properties, media_url = None):
+        media_block = None
+    
+        if media_url:
+            is_video_file = media_url.lower().endswith(('.mp4', '.webm', '.mov', '.avi', '.mkv'))
+            
+            if is_video_file:
+                media_block = {
+                    "type": "embed",
+                    "embed": {"url": media_url}
+                }
+            else:
+                media_block = {
+                    "type": "image", 
+                    "image": {"type": "external", "external": {"url": media_url}}
+                }
+
+
         query = await self.__query_retries(lambda: self.notion.pages.create(
             parent = { "database_id": database_id }, 
             properties = properties, 
-            children = [image_block_props] if image_url else None
+            children = [media_block] if media_block else None
         ))
         return query
 
