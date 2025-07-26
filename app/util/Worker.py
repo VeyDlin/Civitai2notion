@@ -327,7 +327,7 @@ class Worker:
                     "SD": { "select": { "name": sd_version } },
                     "Version": {"rich_text": [{"text": {"content": model_version}}]},
                     "Tags": { "type": "multi_select", "multi_select": tags }
-                }, model['images'][0])
+                }, next(iter(model.get('images', [])), None))
                 
                 notion_file_list.append(file_name)
 
